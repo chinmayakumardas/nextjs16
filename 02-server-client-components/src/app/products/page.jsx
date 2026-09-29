@@ -1,150 +1,98 @@
-import ProductCard from "@/components/products/product-card"
+import ProductSearch from "@/components/products/product-search"
+import ServerProductInfo from "@/components/products/server-product-info"
+import ThemeToggle from "@/components/theme/theme-toggle"
 
-async function getProducts() {
-  const response = await fetch(
-    "https://dummyjson.com/products",
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch products")
-  }
-
-  const data = await response.json()
-
-  return data.products
-}
+import { getProducts } from "@/lib/products"
 
 export default async function ProductsPage() {
   const products = await getProducts()
 
-  const averagePrice =
-    products.reduce((sum, product) => sum + product.price, 0) /
-    products.length
-
-  const totalStock = products.reduce(
-    (sum, product) => sum + product.stock,
-    0
-  )
-
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-muted/30">
+
       {/* Header */}
-      <header className="border-b bg-white">
+      <header className="sticky top-0 z-50 border-b bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 sm:px-6 lg:px-8">
+
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-sm font-bold text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground">
               P
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-slate-950">
+              <p className="text-sm font-semibold">
                 Productly
               </p>
 
-              <p className="hidden text-xs text-slate-400 sm:block">
+              <p className="hidden text-xs text-muted-foreground sm:block">
                 Product Dashboard
               </p>
             </div>
           </div>
 
-          <div className="rounded-full border bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
-            Dashboard
-          </div>
+          <ThemeToggle />
+
         </div>
       </header>
 
-      {/* Main */}
+      {/* Page */}
       <div className="mx-auto max-w-[1600px] px-5 py-8 sm:px-6 lg:px-8">
-        {/* Page Heading */}
+
+        {/* Hero */}
         <section className="mb-8">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Product Catalog
-          </p>
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
 
-          <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            Products
-          </h1>
-
-          <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-            Browse the latest products available in your catalog.
-          </p>
-        </section>
-
-        {/* Stats */}
-        <section className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-              Total Products
-            </p>
-
-            <p className="mt-2 text-2xl font-bold text-slate-950">
-              {products.length}
-            </p>
-
-            <p className="mt-1 text-xs text-slate-400">
-              Products in catalog
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-              Average Price
-            </p>
-
-            <p className="mt-2 text-2xl font-bold text-slate-950">
-              ${averagePrice.toFixed(2)}
-            </p>
-
-            <p className="mt-1 text-xs text-slate-400">
-              Across all products
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-              Total Stock
-            </p>
-
-            <p className="mt-2 text-2xl font-bold text-slate-950">
-              {totalStock}
-            </p>
-
-            <p className="mt-1 text-xs text-slate-400">
-              Units available
-            </p>
-          </div>
-        </section>
-
-        {/* Products Header */}
-        <section>
-          <div className="mb-5 flex items-end justify-between">
             <div>
-              <h2 className="text-xl font-semibold tracking-tight text-slate-950">
-                All Products
-              </h2>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Dashboard
+              </p>
 
-              <p className="mt-1 text-sm text-slate-500">
-                Showing {products.length} products
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Products
+              </h1>
+
+              <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
+                Browse, search, and preview products from your catalog.
               </p>
             </div>
-          </div>
 
-          {/* Product Grid */}
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-              />
-            ))}
+            <div className="rounded-xl border bg-background px-4 py-3 shadow-sm">
+              <p className="text-xs text-muted-foreground">
+                Total Products
+              </p>
+
+              <p className="mt-1 text-xl font-bold">
+                {products.length}
+              </p>
+            </div>
+
           </div>
         </section>
+
+        {/* Server-only information */}
+        <section className="mb-8">
+          <ServerProductInfo />
+        </section>
+
+        {/* Product Search */}
+        <section>
+
+          <div className="mb-5">
+            <h2 className="text-xl font-semibold">
+              Product Catalog
+            </h2>
+
+            <p className="mt-1 text-sm text-muted-foreground">
+              Find a product by name.
+            </p>
+          </div>
+
+          <ProductSearch products={products} />
+
+        </section>
+
       </div>
+
     </main>
   )
 }
