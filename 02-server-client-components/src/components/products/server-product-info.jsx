@@ -2,7 +2,7 @@ import "server-only"
 
 export default function ServerProductInfo() {
   const supplier =
-    process.env.SUPPLIER_NAME || "ABC Suppliers"
+    process.env.SUPPLIER_NAME || "Aditya Suppliers"
 
   const inventory =
     process.env.INTERNAL_INVENTORY || "42"

@@ -20,7 +20,7 @@ export default function ProductPreview({ product }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-full">
-          Open Preview
+          Buy Now
         </Button>
       </DialogTrigger>
 
@@ -49,14 +49,7 @@ export default function ProductPreview({ product }) {
             </p>
           </div>
 
-          <div className="flex justify-end">
-            <Button
-              variant="outline"
-              onClick={() => setOpen(false)}
-            >
-              Close
-            </Button>
-          </div>
+       
 
         </div>
       </DialogContent>
