@@ -7,8 +7,7 @@ export default function Home() {
         <p className="mt-4 text-gray-600">
           Welcome to my Next.js practice app.
         </p>
-        <p className="mt-4 text-gray-600">
-        </p>
+      
       </div>
     </main>
   )
