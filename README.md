@@ -26,4 +26,4 @@ nextjs-16-revision/
 │   └── Concept revision notes
 │
 └── 01-18/
-    └── One focused Next.js practice application per concept
+    └── One focused Next.js practice application per concept.
